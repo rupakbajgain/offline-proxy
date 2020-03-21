@@ -9,7 +9,7 @@ module.exports = {
 			vapp.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
 			return;
 		}
-		if(config.apponline){
+		if(config.options.apponline=='true'){
 			//Online
 			if (ctx.clientToProxyRequest.headers.host == 'www.google.com'
 			&& ctx.clientToProxyRequest.url.indexOf('/search') == 0) {

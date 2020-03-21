@@ -1,22 +1,23 @@
-var exampleApp = require('../../www/example.offline');
-var controlPanelApp = require('../../www/control-panel.offline');
 
 var config = {
 	URL: 'http://127.0.0.1',
-	apponline: false,
 	PORT: process.env.PORT || 8080,
+	options: {
+		apponline: 'false',
+	}, //Can be modified within program
 	
 	getProxyUrl: function(){
 		return this.URL+ ':' + this.PORT;
 	},
 	
-	virtualHosts :{
-		'example.offline' : exampleApp,
-		'control-panel.offline' : controlPanelApp, 
-	},
-	
+	virtualHosts :{},
 	getVirtualApp: function(weblink){
 		return config.virtualHosts[weblink];//Direct subtitution for now
+	},
+	setVirtualApp: function(weblink, app){
+		if(!config.getVirtualApp(weblink)){
+			config.virtualHosts[weblink]=app;
+		}
 	}
 }
 
