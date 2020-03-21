@@ -1,5 +1,5 @@
 'use strict';
-
+//Modified from gunzip
 var zlib = require('zlib');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
 			}
 		delete ctx.serverToProxyResponse.headers['content-encoding'];
 		}
-    return callback();
+		return callback();
 	},
 	onRequest: function(ctx, callback) {
 		if(!ctx.proxyToServerRequestOptions.headers['accept-encoding']){
