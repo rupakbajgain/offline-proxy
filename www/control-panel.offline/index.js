@@ -6,7 +6,7 @@ const app = express();
 
 app.get('/switches/:key/:value/', function(req,res){
 	config.options[req.params.key] = req.params.value;
-	res.end(req.params.key+'='+req.params.value);
+	res.end();//req.params.key+'='+req.params.value);
 });
 
 app.all('*', function (req, res) {

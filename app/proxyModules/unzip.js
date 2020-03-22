@@ -1,6 +1,6 @@
 'use strict';
 //Modified from gunzip
-var zlib = require('zlib');
+const zlib = require('zlib');
 
 module.exports = {
   onResponse: function(ctx, callback) {

@@ -1,4 +1,7 @@
-var config = require('../config/config')
+const config = require('../config/config')
+const random = require('../utils/random')
+const mime = require('mime-types')
+const fs = require('fs')
 
 module.exports = {
 	onRequest: function(ctx, callback) {
@@ -10,14 +13,22 @@ module.exports = {
 			return;
 		}
 		if(config.options.apponline=='true'){
-			//Online
-			if (ctx.clientToProxyRequest.headers.host == 'www.google.com'
-			&& ctx.clientToProxyRequest.url.indexOf('/search') == 0) {
-				ctx.onResponseData(function(ctx, chunk, callback) {
-					chunk = new Buffer(chunk.toString().replace(/<h3.*?<\/h3>/g, '<h3>Pwned!</h3>'));
+			//Online so save it
+			ctx.onResponse(function(ctx, callback){
+				var extension = mime.extension(ctx.serverToProxyResponse.headers['content-type']);
+				var filename=random.randomFileName(extension);
+				var file=fs.createWriteStream(filename);
+				ctx.file=file;
+				return callback(null);
+			});
+			ctx.onResponseData(function(ctx, chunk, callback) {
+					ctx.file.write(chunk);
 					return callback(null, chunk);
-				});
-			}
+			});
+			ctx.onResponseEnd(function(ctx, callback) {
+					ctx.file.close();
+					return callback(null);
+			});
 			return callback();
 		} else {
 			config.getVirtualApp('control-panel.offline').handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
