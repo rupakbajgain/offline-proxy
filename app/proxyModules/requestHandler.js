@@ -1,7 +1,8 @@
-const config = require('../config/config')
-const random = require('../utils/random')
-const mime = require('mime-types')
-const fs = require('fs')
+const config = require('../config/config');
+const random = require('../utils/random');
+const mime = require('mime-types');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
 	onRequest: function(ctx, callback) {
@@ -17,6 +18,7 @@ module.exports = {
 			ctx.onResponse(function(ctx, callback){
 				var extension = mime.extension(ctx.serverToProxyResponse.headers['content-type']);
 				var filename=random.randomFileName(extension);
+				filename=path.resolve(process.cwd(), config.options.offlineFilesDir + filename);//Changing to absolute
 				var file=fs.createWriteStream(filename);
 				ctx.file=file;
 				return callback(null);

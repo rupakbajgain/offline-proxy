@@ -1,5 +1,6 @@
-const path = require('path')
-const fs = require('fs')
+const path = require('path');
+const fs = require('fs');
+const config = require('../config/config');
 
 var functions = {
 	randomSerialNumber : function () {
@@ -15,8 +16,8 @@ var functions = {
 		if(!extension)extension='dat';
 		var filename='';
 		while(file_not_ok ){
-			filename=path.resolve(process.cwd(), './.file/' + functions.randomSerialNumber() +'.'+extension);
-			file_not_ok = fs.existsSync(filename);
+			filename=functions.randomSerialNumber() +'.'+extension;
+			file_not_ok = fs.existsSync(path.resolve(process.cwd(), config.options.offlineFilesDir + filename));//Making files relative
 		}
 		return filename;
 	},

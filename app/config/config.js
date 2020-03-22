@@ -4,6 +4,7 @@ var config = {
 	PORT: process.env.PORT || 8080,
 	options: {
 		apponline: 'false',
+		offlineFilesDir: './.file/',
 	}, //Can be modified within program
 	
 	getProxyUrl: function(){
