@@ -12,6 +12,9 @@ app.get('/switches/:key/:value/', function(req, res){
 });
 
 app.all('*', function(req, res) {
+  if(req.fileToSend){
+    res.sendFile(req.fileToSend);
+  }else{
   if (config.options.apponline === 'true'){
     res.send(
       '<center>You are running in online mode<br>' +
@@ -30,6 +33,7 @@ app.all('*', function(req, res) {
   'Click here to go online.' +
   '</a>' +
 	'</center>');
+  }
   }
 });
 
