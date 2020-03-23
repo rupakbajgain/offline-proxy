@@ -1,27 +1,28 @@
-//Import libraries
-var Proxy = require('http-mitm-proxy');
-const express = require('express');
+'use strict';
 
-//Import custom modules
-var proxy_unzip_module = require('./app/proxyModules/unzip');
-var proxy_errorHandler_module = require('./app/proxyModules/errorHandler');
-var proxy_requestHandler_module = require('./app/proxyModules/requestHandler');
-var config = require('./app/config/config');
+// Import libraries
+const Proxy = require('http-mitm-proxy');
 
-//Import sites
-var staticApp = require('./www/static.offline');
-var controlPanelApp = require('./www/control-panel.offline');
+// Import custom modules
+const proxy_unzip_module = require('./app/proxyModules/unzip');
+const proxy_errorHandler_module = require('./app/proxyModules/errorHandler');
+const proxy_reqHandler_module = require('./app/proxyModules/requestHandler');
+const config = require('./app/config/config');
 
-//Define new proxy application
+// Import sites
+const staticApp = require('./www/static.offline');
+const controlPanelApp = require('./www/control-panel.offline');
+
+// Define new proxy application
 var proxy = Proxy();
 proxy.use(proxy_unzip_module);
 proxy.use(proxy_errorHandler_module);
-proxy.use(proxy_requestHandler_module);
+proxy.use(proxy_reqHandler_module);
 
-//Set virtual hosts
+// Set virtual hosts
 config.setVirtualApp('static.offline', staticApp);
 config.setVirtualApp('control-panel.offline', controlPanelApp);
 
-//Start listening for connections
+// Start listening for connections
 proxy.listen({port: config.PORT});
-console.log("Sever started on " + config.getProxyUrl());
+console.log('Sever started on ' + config.getProxyUrl());
