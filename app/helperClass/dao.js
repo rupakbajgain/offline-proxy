@@ -55,7 +55,7 @@ class AppDAO {
       });
     });
   }
-  
+
   close(){
     return new Promise((resolve, reject) => {
       resolve();
