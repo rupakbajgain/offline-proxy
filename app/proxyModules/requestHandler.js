@@ -8,11 +8,31 @@ const config = require('../config/config');
 const random = require('../utils/random');
 const getDB = require('../helperClass/getDatabase');
 
+// Add features to config
+config.virtualHosts = {};
+config.getVirtualApp = function(weblink){
+  return config.virtualHosts[weblink];// Direct subtitution for now
+};
+config.setVirtualApp = function(weblink, app){
+  if (!config.getVirtualApp(weblink)){
+    config.virtualHosts[weblink] = app;
+  }
+};
+
 module.exports = {
   onRequest: function(ctx, callback) {
     var host = ctx.clientToProxyRequest.headers.host;
     var url = ctx.clientToProxyRequest.url;
     var ulink = host + url;// -----
+
+    // Check for virtual apps
+    var vapp = config.getVirtualApp(host);
+    if (vapp){
+      // If exists than diapatch
+      console.log('Sending ' + host + ' request to virtual host.');
+      vapp.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
+      return;
+    };
 
     if (config.options.apponline === 'true'){
       // Online so add callbacks to save webpage

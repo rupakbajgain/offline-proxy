@@ -7,7 +7,6 @@ const Proxy = require('http-mitm-proxy');
 const proxy_unzip_module = require('./app/proxyModules/unzip');
 const proxy_errorHandler_module = require('./app/proxyModules/errorHandler');
 const proxy_reqHandler_module = require('./app/proxyModules/requestHandler');
-const proxy_virtual_module = require('./app/proxyModules/virtualHostHandler');
 const config = require('./app/config/config');
 
 // Import sites
@@ -18,7 +17,6 @@ const controlPanelApp = require('./www/control-panel.offline');
 var proxy = Proxy();
 proxy.use(proxy_unzip_module);
 proxy.use(proxy_errorHandler_module);
-proxy.use(proxy_virtual_module);
 proxy.use(proxy_reqHandler_module);
 
 // Set virtual hosts
