@@ -36,6 +36,18 @@ class SiteTable {
   getAll() {
     return this.dao.all('SELECT * FROM site');
   }
+
+  getValue(field) {
+    return this.dao.get(
+      'SELECT value FROM site WHERE field = ?',
+      [field]);
+  }
+
+  update(field, value) {
+    return this.dao.run(
+      'UPDATE site SET value = ? WHERE field = field',
+      [value, field]);
+  }
 }
 
 module.exports = SiteTable;

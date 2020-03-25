@@ -14,8 +14,10 @@ module.exports = {
     if (dbs[host]){
       return dbs[host];
     } else {
-      var promises = [];
       var dao = new AppDAO('./.db/sites/' + host + '.sqlite3');
+      dbs[host] = dao;
+
+      var promises = [];
       // Create all necessary tables also
       dao.filenameTable = new FilenameTable(dao);
       dao.requestsTable = new RequestsTable(dao);
@@ -32,7 +34,6 @@ module.exports = {
         await promises[i];
       };
 
-      dbs[host] = dao;
       return dao;
     }
   },

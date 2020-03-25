@@ -30,11 +30,28 @@ module.exports = {
 
     var dao = await getDB.getDatabase(host.replace(':', '@'));
 
+    // If request has cookie update the saved cookie
+    var cookie = ctx.clientToProxyRequest.headers.cookie;
+    if (cookie){
+      dao.siteTable.getValue('cookie')
+        .then((a) => {
+          if (a){
+            if (a.value !== cookie){
+              console.log('Updating cookie:' + host);
+              dao.siteTable.update('cookie', cookie);
+            }
+          } else {
+            console.log('Set cookie:' + host);
+            dao.siteTable.create('cookie', cookie);
+          }
+        });
+    };
+
     // Check for virtual apps
     var vapp = config.getVirtualApp(host);
     if (vapp){
       // If exists than diapatch
-      console.log('Sending ' + host + ' request to virtual host.');
+      console.log('Sending to virtual host: ' + host);
       vapp.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
       return;
     };
