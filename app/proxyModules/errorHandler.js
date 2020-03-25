@@ -14,7 +14,7 @@ module.exports = {
     var res = ctx.proxyToClientResponse;
     if (errorKind === 'PROXY_TO_SERVER_REQUEST_ERROR'){
       config.helperApp
-      .handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
+        .handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
       return;
     } else {
       res.writeHead(504, 'Proxy Error');

@@ -36,7 +36,7 @@ class RequestsTable {
   getAll() {
     return this.dao.all('SELECT * FROM requests');
   }
-  
+
   setUserRequest(id){
     return this.dao.run(
       'UPDATE requests SET userdefined = true WHERE id = ?',

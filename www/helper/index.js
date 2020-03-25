@@ -23,7 +23,8 @@ app.all('*', async function(req, res) {
   dao.requestsTable.create(url, false)
     .then((a) => {
       var options = {};
-      options.responseUrl = 'http://control-panel.offline/addRequest/' + host+ '/' + a.id;
+      var get_url = 'http://control-panel.offline/addRequest/';
+      options.responseUrl = get_url + host + '/' + a.id;
       options.apponline = config.options.apponline;
       res.render('index', options);
     });
