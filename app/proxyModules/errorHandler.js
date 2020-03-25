@@ -6,7 +6,8 @@ module.exports = {
   onError: function(ctx, err, errorKind) {
     // ctx may be null
     if (!ctx){
-      console.log(err);
+      // console.log(err);
+      // Not interested on connect errors
       return;
     };
     var url = ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';

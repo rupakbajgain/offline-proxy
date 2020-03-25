@@ -19,11 +19,16 @@ config.setVirtualApp = function(weblink, app){
   }
 };
 
+// Default is offline mode,
+// Which automatically connects to net if given file is unavailable
+
 module.exports = {
-  onRequest: function(ctx, callback) {
+  onRequest: async function(ctx, callback) {
     var host = ctx.clientToProxyRequest.headers.host;
     var url = ctx.clientToProxyRequest.url;
     var ulink = host + url;// -----
+
+    var dao = await getDB.getDatabase(host.replace(':', '@'));
 
     // Check for virtual apps
     var vapp = config.getVirtualApp(host);
@@ -34,9 +39,33 @@ module.exports = {
       return;
     };
 
-    if (config.options.apponline === 'true'){
-      // Online so add callbacks to save webpage
-      ctx.onResponse(function(ctx, callback){
+    // Now try to send saved file
+    if (config.options.apponline === 'false'){
+      await dao.filenameTable.getFilename(url)
+        .then((a) => {
+          if (a.length){
+            var randomFile = Math.floor(Math.random() * a.length);
+            var filename = a[randomFile].file; // Send one file randomly
+            var uinfo = '';
+            if (a.length > 1)
+              uinfo = '[' + randomFile + ']';
+            console.log('Sending saved file:' + ulink + uinfo);
+            ctx.clientToProxyRequest.fileToSend = filename;
+            var app = config.getVirtualApp('control-panel.offline');
+            app.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
+          };
+        });
+
+      // If returned from resource directly
+      if (ctx.clientToProxyRequest.fileToSend)
+        return;
+    }
+
+    // Now try fetching from net
+    ctx.onResponse(function(ctx, callback){
+      console.log('Feteched ' + ulink);
+      // Save file for get methods only
+      if (ctx.clientToProxyRequest.method === 'GET') {
         var contentType = ctx.serverToProxyResponse.headers['content-type'];
         var extension = mime.extension(contentType);
         var filename = random.randomFileName(extension);
@@ -46,42 +75,27 @@ module.exports = {
 
         var file = fs.createWriteStream(filename);
         ctx.file = file; // Need to fix later
-
-        var dao = getDB.getDatabase(host);
         dao.filenameTable.create(filename, url);
-        // Continue processes
-        return callback(null);
-      });
-      // --- --- ----
-      ctx.onResponseData(function(ctx, chunk, callback) {
-        if (ctx.file)
-          ctx.file.write(chunk);
-        return callback(null, chunk);
-      });
-      // --- --- ---
-      ctx.onResponseEnd(function(ctx, callback) {
-        if (ctx.file)
-          ctx.file.close();
-        return callback(null);
-      });
-      // Other callbacks have been added so add callback
-      return callback();
-    } else {
-      // Offline so try to access from db
-      var dao = getDB.getDatabase(host);
-      dao.filenameTable.getFilename(url)
-        .then((a) => {
-          if (a.length){
-            var randomFile = Math.floor(Math.random() * a.length);
-            var filename = a[randomFile].file; // Send one file randomly
-            console.log('Sending saved file:' + ulink);
-            ctx.clientToProxyRequest.fileToSend = filename;
-          };
-          // Send file back
-          var app = config.getVirtualApp('control-panel.offline');
-          app.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
-        });
-      return; // Handled so stop further steps
-    }
+      }
+      // Continue processes
+      return callback(null);
+    });
+    // --- --- ----
+    ctx.onResponseData(function(ctx, chunk, callback) {
+      if (ctx.file)
+        ctx.file.write(chunk);
+      return callback(null, chunk);
+    });
+    // --- --- ---
+    ctx.onResponseEnd(function(ctx, callback) {
+      if (ctx.file)
+        ctx.file.close();
+      return callback(null);
+    });
+
+    // Other callbacks have been added so call callback
+    return callback();
+
+    // Leave other things to error handler
   },
 };
