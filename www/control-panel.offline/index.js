@@ -3,38 +3,35 @@
 const express = require('express');
 
 var config = require('../../app/config/config');
+const getDB = require('../../app/helperClass/getDatabase');
 
 const app = express();
+app.set('view engine', 'pug');
+app.set('views', __dirname + '\\templates');
 
 app.get('/switches/:key/:value/', function(req, res){
   config.options[req.params.key] = req.params.value;
   res.end();// req.params.key+'='+req.params.value);
 });
 
-app.all('*', function(req, res) {
+app.all('*', async function(req, res) {
+  // If file requestes send it
   if (req.fileToSend){
     res.sendFile(req.fileToSend);
-  } else {
-    if (config.options.apponline === 'true'){
-      res.send(
-        '<center>You are running in online mode<br>' +
-	'<img src="http://static.offline/doug.jpg"><br/>' +
-	'but there is problem in connection<br/>' +
-	'<a href="http://control-panal.offline/switches/apponline/false">' +
-  'Click here to go offline.' +
-  '</a>' +
-	'</center>');
-    } else {
-      res.send(
-        '<center>You are running in offline mode<br>' +
-	'<img src="http://static.offline/doug.jpg"><br/>' +
-	'but no saved datas available<br/>' +
-	'<a href="http://control-panal.offline/switches/apponline/true">' +
-  'Click here to go online.' +
-  '</a>' +
-	'</center>');
-    }
+    return;
   }
+
+  // Create failed page
+  var host = req.headers.host;
+  var url = req.url;
+  var dao = await getDB.getDatabase(host.replace(':', '@'));
+  dao.requestsTable.create(url, false)
+    .then((a) => {
+      var options = {};
+      options.responseUrl = 'http://control-panal.offline/addRequest/' + a.id;
+      options.apponline = config.options.apponline;
+      res.render('index', options);
+    });
 });
 
 module.exports = app;

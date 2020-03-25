@@ -1,7 +1,7 @@
 'use strict';
 
 // Import libraries
-const Proxy = require('http-mitm-proxy');
+const Proxy = require('./app/modifiedLibs/proxy');
 
 // Import custom modules
 const proxy_unzip_module = require('./app/proxyModules/unzip');
