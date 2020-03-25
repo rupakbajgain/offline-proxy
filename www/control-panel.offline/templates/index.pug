@@ -4,14 +4,38 @@ html
     title Proxy App
   body
     center
-      | You are running in #{apponline=="true"?"online":"offline"} mode
-      br
       img(src="http://static.offline/doug.jpg")
       br
-      if apponline=="true"
-        | but there is problem in connection.
-      else
-        | but no saved datas available and net seems to be unavailable.
-        br
-        a(href=responseUrl)
-          | Click here to request for later.
+      h2 Control Panal
+      hr
+      h3 General
+      div Proxy server running on #{config.URL}:#{config.PORT}
+      div
+        span Mode: &nbsp;
+          if config.options.apponline=="true"
+            b
+              span  Online
+          else 
+            a(href='http://control-panel.offline/switches/apponline/true')
+              span Online
+          | &nbsp;
+          if config.options.apponline=="false"
+            b
+              span  Offline
+          else 
+            a(href='http://control-panel.offline/switches/apponline/false')
+              span Offline
+      div
+        span Server CWD:
+        b= serverPath
+      div 
+        span Offline file dir:
+        b= config.options.offlineFilesDir
+      hr
+      h3 Virtual Hosts
+      ul
+      each vhost in vhosts
+        li
+          <a href='https://#{vhost}'>
+            span= vhost
+          

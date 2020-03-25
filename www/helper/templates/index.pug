@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Proxy App
+  body
+    center
+      | You are running in #{apponline=="true"?"online":"offline"} mode
+      br
+      img(src="http://static.offline/doug.jpg")
+      br
+      if apponline=="true"
+        | but there is problem in connection.
+      else
+        | but no saved datas available and net seems to be unavailable.
+        br
+        a(href=responseUrl)
+          | Click here to request for later.

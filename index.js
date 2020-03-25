@@ -12,6 +12,7 @@ const config = require('./app/config/config');
 // Import sites
 const staticApp = require('./www/static.offline');
 const controlPanelApp = require('./www/control-panel.offline');
+const helperApp = require('./www/helper');
 
 // Define new proxy application
 var proxy = Proxy();
@@ -22,6 +23,7 @@ proxy.use(proxy_reqHandler_module);
 // Set virtual hosts
 config.setVirtualApp('static.offline', staticApp);
 config.setVirtualApp('control-panel.offline', controlPanelApp);
+config.helperApp = helperApp;
 
 // Start listening for connections
 proxy.listen({port: config.PORT});

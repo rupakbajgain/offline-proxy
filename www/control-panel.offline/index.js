@@ -9,11 +9,24 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', __dirname + '\\templates');
 
+app.get('/', function(req, res){
+  var options = {};
+  options.config = config;
+  options.serverPath = process.cwd();
+  options.vhosts = [];
+  var i;
+  for(i in config.virtualHosts){
+    options.vhosts.push(i);
+  }
+  console.log(options);
+  res.render('index', options);
+});
+
 app.get('/switches/:key/:value/', function(req, res){
   config.options[req.params.key] = req.params.value;
   var options = {};
   options[req.params.key] = req.params.value;
-  res.json(200, options);
+  res.redirect('/');
 });
 
 app.get('/addRequest/:host/:id/', async function(req, res){
@@ -29,26 +42,6 @@ app.get('/addRequest/:host/:id/', async function(req, res){
     }
     res.render('addRequest', options);
   });
-});
-
-app.all('*', async function(req, res) {
-  // If file requestes send it
-  if (req.fileToSend){
-    res.sendFile(req.fileToSend);
-    return;
-  }
-
-  // Create failed page
-  var host = req.headers.host;
-  var url = req.url;
-  var dao = await getDB.getDatabase(host.replace(':', '@'));
-  dao.requestsTable.create(url, false)
-    .then((a) => {
-      var options = {};
-      options.responseUrl = 'http://control-panal.offline/addRequest/' + host+ '/' + a.id;
-      options.apponline = config.options.apponline;
-      res.render('index', options);
-    });
 });
 
 module.exports = app;

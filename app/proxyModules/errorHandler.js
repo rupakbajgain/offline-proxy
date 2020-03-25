@@ -13,8 +13,8 @@ module.exports = {
     var url = ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';
     var res = ctx.proxyToClientResponse;
     if (errorKind === 'PROXY_TO_SERVER_REQUEST_ERROR'){
-      config.getVirtualApp('control-panel.offline')
-        .handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
+      config.helperApp
+      .handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
       return;
     } else {
       res.writeHead(504, 'Proxy Error');

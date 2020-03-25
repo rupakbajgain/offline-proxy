@@ -68,8 +68,7 @@ module.exports = {
               uinfo = '[' + randomFile + ']';
             console.log('Sending saved file:' + ulink + uinfo);
             ctx.clientToProxyRequest.fileToSend = filename;
-            var app = config.getVirtualApp('control-panel.offline');
-            app.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
+            config.helperApp.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
           };
         });
 
