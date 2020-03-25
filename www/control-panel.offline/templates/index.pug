@@ -7,7 +7,9 @@ html
       img(src="http://static.offline/doug.jpg")
       br
       h2 Control Panal
+      
       hr
+      
       h3 General
       div Proxy server running on #{config.URL}:#{config.PORT}
       div
@@ -16,14 +18,14 @@ html
             b
               span  Online
           else 
-            a(href='http://control-panel.offline/switches/apponline/true')
+            a(href='/switches/apponline/true')
               span Online
           | &nbsp;
           if config.options.apponline=="false"
             b
               span  Offline
           else 
-            a(href='http://control-panel.offline/switches/apponline/false')
+            a(href='/switches/apponline/false')
               span Offline
       div
         span Server CWD:
@@ -31,11 +33,36 @@ html
       div 
         span Offline file dir:
         b= config.options.offlineFilesDir
+        
       hr
+      
       h3 Virtual Hosts
       ul
       each vhost in vhosts
         li
           <a href='https://#{vhost}'>
             span= vhost
-          
+          </a>
+      hr
+      
+      h3 Requests
+      form(method='get',action='/requests')
+        span Host:
+        input(name='host')
+        input(type='submit',value='Ok')
+      hr
+      
+      h3 Get all available links
+      form(method='get',action='/getAllLinks')
+        span Host:
+        input(name='host')
+        input(type='submit',value='Ok')
+        
+      hr
+      h3 Others
+      a(href='https://static.offline/ca.pem')
+        span Download certificate
+      br
+      a(href='https://static.offline/foxyproxy.xpi')
+        span Download firefox proxy plugin
+      

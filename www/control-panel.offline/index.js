@@ -18,7 +18,6 @@ app.get('/', function(req, res){
   for(i in config.virtualHosts){
     options.vhosts.push(i);
   }
-  console.log(options);
   res.render('index', options);
 });
 
@@ -27,6 +26,28 @@ app.get('/switches/:key/:value/', function(req, res){
   var options = {};
   options[req.params.key] = req.params.value;
   res.redirect('/');
+});
+
+app.get('/requests', async function(req, res){
+  var options={};
+  options.host = req.query.host;
+  var dao = await getDB.getDatabase(options.host.replace(':', '@'));
+  dao.requestsTable.getAll()
+  .then((a)=>{
+    options.requests = a;
+    res.render('requests', options);
+  });
+});
+
+app.get('/getAllLinks', async function(req, res){
+  var options={};
+  options.host = req.query.host;
+  var dao = await getDB.getDatabase(options.host.replace(':', '@'));
+  dao.filenameTable.getAll()
+  .then((a)=>{
+    options.links = a;
+    res.render('getAllLinks', options);
+  });
 });
 
 app.get('/addRequest/:host/:id/', async function(req, res){

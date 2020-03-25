@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Proxy App
+  body
+    center
+      img(src="http://static.offline/doug.jpg")
+      br
+      h2 All links
+      h3= host
+    hr
+    
+    div
+      ul
+        each i in links
+          li
+            <a href='https://#{host}#{i.url}'
+              span= i.url
+            </a>

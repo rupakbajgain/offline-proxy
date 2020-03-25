@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    title Proxy App
+  body
+    center
+      img(src="http://static.offline/doug.jpg")
+      br
+      h2 Requests  
+      h3= host
+    hr
+    
+    div
+      h4 Selected
+      ul
+        each i in requests
+          if i.userdefined
+            li
+              <a href='https://#{host}#{i.url}'
+                span= i.url
+              </a>
+            
+    hr
+    
+    div
+      h4 Misses
+      ul
+        each i in requests
+          if !i.userdefined
+            li
+              <a href='https://#{host}#{i.url}'
+                span= i.url
+              </a>
+          
