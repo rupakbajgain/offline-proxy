@@ -29,6 +29,7 @@
     "optimist": "^0.6.1",
     "pug": "^2.0.4",
     "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
     "semaphore": "^1.1.0",

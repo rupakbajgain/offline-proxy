@@ -11,13 +11,24 @@ app.set('views', __dirname + '\\templates');
 
 app.get('/switches/:key/:value/', function(req, res){
   config.options[req.params.key] = req.params.value;
-  res.end();// req.params.key+'='+req.params.value);
+  var options = {};
+  options[req.params.key] = req.params.value;
+  res.json(200, options);
 });
 
 app.get('/addRequest/:host/:id/', async function(req, res){
   var dao = await getDB.getDatabase(req.params.host.replace(':', '@'));
-  dao.requestsTable.setUserRequest(req.params.id);
-  res.end();
+  dao.requestsTable.setUserRequest(req.params.id)
+  .then((a)=>dao.requestsTable.getById(a.id))
+  .then((a)=>{
+    var options = {};
+    if(a){
+      options.url =  a.url;
+      options.host =  req.params.host;
+      options.ulink = "https://" + options.host + options.url;
+    }
+    res.render('addRequest', options);
+  });
 });
 
 app.all('*', async function(req, res) {
