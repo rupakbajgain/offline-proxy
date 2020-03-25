@@ -14,6 +14,12 @@ app.get('/switches/:key/:value/', function(req, res){
   res.end();// req.params.key+'='+req.params.value);
 });
 
+app.get('/addRequest/:host/:id/', async function(req, res){
+  var dao = await getDB.getDatabase(req.params.host.replace(':', '@'));
+  dao.requestsTable.setUserRequest(req.params.id);
+  res.end();
+});
+
 app.all('*', async function(req, res) {
   // If file requestes send it
   if (req.fileToSend){
@@ -28,7 +34,7 @@ app.all('*', async function(req, res) {
   dao.requestsTable.create(url, false)
     .then((a) => {
       var options = {};
-      options.responseUrl = 'http://control-panal.offline/addRequest/' + a.id;
+      options.responseUrl = 'http://control-panal.offline/addRequest/' + host+ '/' + a.id;
       options.apponline = config.options.apponline;
       res.render('index', options);
     });

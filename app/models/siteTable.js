@@ -45,7 +45,7 @@ class SiteTable {
 
   update(field, value) {
     return this.dao.run(
-      'UPDATE site SET value = ? WHERE field = field',
+      'UPDATE site SET value = ? WHERE field = ?',
       [value, field]);
   }
 }

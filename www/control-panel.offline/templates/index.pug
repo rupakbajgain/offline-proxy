@@ -4,22 +4,14 @@ html
     title Proxy App
   body
     center
-      if apponline=="true"
-        span You are running in online mode
-      else
-        span You are running in offline mode
+      | You are running in #{apponline=="true"?"online":"offline"} mode
       br
       img(src="http://static.offline/doug.jpg")
       br
       if apponline=="true"
-        span but there is problem in connection.
+        | but there is problem in connection.
       else
-        span but no saved datas available and net seems to be unavailable.
-        br
-        a(href="http://control-panal.offline/switches/apponline/true")
-          span Click here to go online.
-        br
-        span or,
+        | but no saved datas available and net seems to be unavailable.
         br
         a(href=responseUrl)
-          span Click here to request for later.
+          | Click here to request for later.
