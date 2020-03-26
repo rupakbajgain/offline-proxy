@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const liburl = require('url');
 
-const debugCookie = require('debug')('cookie');
-const debug = require('debug')('request-handler');
+const debugCookie = require('debug')('proxyapp:cookie');
+const debug = require('debug')('proxyapp:requesthandler');
 
 const config = require('../config/config');
 const random = require('../utils/random');

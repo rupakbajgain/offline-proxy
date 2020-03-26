@@ -20,6 +20,7 @@ app.all('*', async function(req, res) {
   if (req.method !== 'GET') {
     options.apponline = config.options.apponline;
     res.render('index', options);
+    return;
   };
   // Create failed page
   var host = req.headers.host;
