@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('../config/config');
+const debug = require('debug')('proxyapp:onError');
 
 module.exports = {
   onError: function(ctx, err, errorKind) {
@@ -19,6 +20,7 @@ module.exports = {
     } else {
       res.writeHead(504, 'Proxy Error');
       res.write('Error on proxy <br/><pre>');
+      debug(err);
       console.log(err);
       res.write(errorKind + ' on ' + url + ':', err);
       res.write('</pre>');

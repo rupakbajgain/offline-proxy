@@ -17,8 +17,6 @@ module.exports = {
           ctx.addResponseFilter(zlib.createInflate());
           break;
         default:
-          // New encoding?? or merged
-          console.log(ctx.serverToProxyResponse.headers['content-encoding']);
           break;
       }
       delete ctx.serverToProxyResponse.headers['content-encoding'];

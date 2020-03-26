@@ -16,13 +16,18 @@ app.all('*', async function(req, res) {
     return;
   }
 
+  var options = {};
+  if (req.method !== 'GET') {
+    options.apponline = config.options.apponline;
+    res.render('index', options);
+    return;
+  };
   // Create failed page
   var host = req.headers.host;
   var url = req.url;
   var dao = await getDB.getDatabase(host.replace(':', '@'));
   dao.requestsTable.create(url, false)
     .then((a) => {
-      var options = {};
       var get_url = 'http://control-panel.offline/addRequest/';
       options.responseUrl = get_url + host + '/' + a.id;
       options.apponline = config.options.apponline;
