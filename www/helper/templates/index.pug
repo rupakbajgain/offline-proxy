@@ -13,5 +13,6 @@ html
       else
         | but no saved datas available and net seems to be unavailable.
         br
-        a(href=responseUrl)
-          | Click here to request for later.
+        if responseUrl
+          a(href=responseUrl)
+            | Click here to request for later.
