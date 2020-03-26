@@ -38,11 +38,11 @@ html
       
       h3 Virtual Hosts
       ul
-      each vhost in vhosts
-        li
-          <a href='https://#{vhost}'>
-            span= vhost
-          </a>
+        each vhost in vhosts
+          li
+            <a href='https://#{vhost}'>
+              span= vhost
+            </a>
       hr
       
       h3 Requests
@@ -65,4 +65,27 @@ html
       br
       a(href='https://static.offline/foxyproxy.xpi')
         span Download firefox proxy plugin
+      
+      hr
+      h3 Available offline sites
+      table
+        tr
+          th Site
+          th Requests
+          th All links
+        each site in sites
+          - var sitename = site.substr(0,site.lastIndexOf('.')).replace('@',':')
+          tr
+            td
+              <a href='https://#{sitename}'>
+                =sitename
+              </a>
+            td
+              <a href='/requests?host=#{sitename}'>
+                | Requests
+              </a>
+            td
+              <a href='/getAllLinks?host=#{sitename}'>
+                | all links
+              </a>  
       

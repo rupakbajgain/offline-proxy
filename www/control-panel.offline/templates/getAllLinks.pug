@@ -9,11 +9,28 @@ html
       h2 All links
       h3= host
     hr
-    
     div
+      h4 HTMLs
       ul
         each i in links
-          li
-            <a href='https://#{host}#{i.url}'
-              span= i.url
-            </a>
+          - var dotpos = i.file.lastIndexOf('.');
+          - if(dotpos!==-1) var ext = i.file.substr(dotpos+1,i.file.length)
+          if ext==='html'
+            li
+              span [#{ext}]
+              <a href='https://#{host}#{i.url}'
+                span= i.url
+              </a>    
+    hr
+    div
+      h4 others
+      ul
+        each i in links
+          - var dotpos = i.file.lastIndexOf('.');
+          - if(dotpos!==-1) var ext = i.file.substr(dotpos+1,i.file.length)
+          if ext!=='html'
+            li
+              span [#{ext}]
+              <a href='https://#{host}#{i.url}'
+                span= i.url
+              </a>    

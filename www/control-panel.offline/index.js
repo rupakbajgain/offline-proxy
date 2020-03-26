@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const fs = require('fs');
 
 var config = require('../../app/config/config');
 const getDB = require('../../app/helperClass/getDatabase');
@@ -18,7 +19,14 @@ app.get('/', function(req, res){
   for (i in config.virtualHosts){
     options.vhosts.push(i);
   }
-  res.render('index', options);
+  fs.readdir('./.db/sites', (err, files) => {
+    if (err){
+      console.error(err);
+    } else {
+      options.sites = files;
+    }
+    res.render('index', options);
+  });
 });
 
 app.get('/switches/:key/:value/', function(req, res){

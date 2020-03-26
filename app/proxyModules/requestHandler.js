@@ -3,6 +3,7 @@
 const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
+const liburl = require('url');
 
 const config = require('../config/config');
 const random = require('../utils/random');
@@ -84,6 +85,8 @@ module.exports = {
       // Save file for get methods only
       if (ctx.clientToProxyRequest.method === 'GET') {
         var contentType = ctx.serverToProxyResponse.headers['content-type'];
+        if (!contentType) // Try guessing
+          contentType = mime.lookup(liburl.parse(url).pathname);
         var extension = mime.extension(contentType);
         var filename = random.randomFileName(extension);
         var relpath = config.options.offlineFilesDir + filename;
