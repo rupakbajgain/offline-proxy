@@ -2,7 +2,7 @@
 
 const sqlite3 = require('sqlite3');
 const Promise = require('bluebird');
-const debug = require('debug')('proxyapp:database*')
+const debug = require('debug')('proxyapp:database*');
 
 class AppDAO {
   constructor(dbFilePath) {

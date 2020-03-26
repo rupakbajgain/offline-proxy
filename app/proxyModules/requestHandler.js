@@ -109,8 +109,10 @@ module.exports = {
     });
     // --- --- ---
     ctx.onResponseEnd(function(ctx, callback) {
-      if (ctx.file)
+      if (ctx.file){
+        dao.requestsTable.deleteUrl(url);
         ctx.file.close();
+      }
       return callback(null);
     });
 
