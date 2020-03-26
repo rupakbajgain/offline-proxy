@@ -11,7 +11,7 @@ html
       hr
       
       h3 General
-      div Proxy server running on #{config.URL}:#{config.PORT}
+      div Proxy server running on #{config.getProxyUrl()}
       div
         span Mode: &nbsp;
           if config.options.apponline=="true"

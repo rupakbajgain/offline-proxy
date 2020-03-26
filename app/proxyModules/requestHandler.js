@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const liburl = require('url');
 
+const debugCookie = require('debug')('cookie');
+const debug = require('debug')('request-handler');
+
 const config = require('../config/config');
 const random = require('../utils/random');
 const getDB = require('../helperClass/getDatabase');
@@ -38,11 +41,11 @@ module.exports = {
         .then((a) => {
           if (a){
             if (a.value !== cookie){
-              console.log('Updating cookie:' + host);
+              debugCookie('Updating cookie:' + host);
               dao.siteTable.update('cookie', cookie);
             }
           } else {
-            console.log('Set cookie:' + host);
+            debugCookie('Set cookie:' + host);
             dao.siteTable.create('cookie', cookie);
           }
         });
@@ -52,7 +55,7 @@ module.exports = {
     var vapp = config.getVirtualApp(host);
     if (vapp){
       // If exists than diapatch
-      console.log('Sending to virtual host: ' + host);
+      debug('Sending to virtual host: ' + host);
       vapp.handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
       return;
     };
@@ -67,7 +70,7 @@ module.exports = {
             var uinfo = '';
             if (a.length > 1)
               uinfo = '[' + randomFile + ']';
-            console.log('Sending saved file:' + ulink + uinfo);
+            debug('Sending saved file:' + ulink + uinfo);
             ctx.clientToProxyRequest.fileToSend = filename;
             config.helperApp
               .handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
@@ -81,7 +84,7 @@ module.exports = {
 
     // Now try fetching from net
     ctx.onResponse(function(ctx, callback){
-      console.log('Feteched ' + ulink);
+      debug('Feteching ' + ulink);
       // Save file for get methods only
       if (ctx.clientToProxyRequest.method === 'GET') {
         var contentType = ctx.serverToProxyResponse.headers['content-type'];
