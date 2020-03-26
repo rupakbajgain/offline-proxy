@@ -26,12 +26,25 @@ app.all('*', async function(req, res) {
   var host = req.headers.host;
   var url = req.url;
   var dao = await getDB.getDatabase(host.replace(':', '@'));
-  dao.requestsTable.create(url, false)
-    .then((a) => {
-      var get_url = 'http://control-panel.offline/addRequest/';
+
+  function handlePage(a){
+    var get_url = 'http://control-panel.offline/addRequest/';
+    if (!a.userdefined)
       options.responseUrl = get_url + host + '/' + a.id;
-      options.apponline = config.options.apponline;
-      res.render('index', options);
+    options.apponline = config.options.apponline;
+    res.render('index', options);
+  };
+
+  dao.requestsTable.getByUrl(url)
+    .then((a) => {
+      if (a){
+        handlePage(a);
+      } else {
+        dao.requestsTable.create(url, false)
+          .then((a) => {
+            handlePage(a);
+          });
+      }
     });
 });
 

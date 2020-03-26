@@ -40,6 +40,13 @@ class RequestsTable {
       [id]);
   }
 
+  getByUrl(url) {
+    return this.dao.get(
+      'SELECT * FROM requests WHERE url = ?',
+      [url]);
+  }
+
+
   getAll() {
     return this.dao.all('SELECT * FROM requests');
   }
