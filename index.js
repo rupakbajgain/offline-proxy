@@ -2,7 +2,7 @@
 
 // Import libraries
 const Proxy = require('./app/modifiedLibs/proxy');
-const debug = require('debug')('proxyapp:index');
+const debug = require('debug')('proxyapp:index*');
 
 // Import custom modules
 const proxy_unzip_module = require('./app/proxyModules/unzip');
@@ -28,5 +28,4 @@ config.helperApp = helperApp;
 
 // Start listening for connections
 proxy.listen({port: config.PORT});
-console.log('Sever started on ' + config.getProxyUrl());
 debug('Sever started on ' + config.getProxyUrl());
