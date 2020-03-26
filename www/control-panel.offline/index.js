@@ -67,7 +67,7 @@ app.get('/addRequest/:host/:id/', async function(req, res){
       if (a){
         options.url = a.url;
         options.host = req.params.host;
-        options.ulink = 'https://' + options.host + options.url;
+        options.ulink = 'http://' + options.host + options.url;
       }
       res.render('addRequest', options);
     });

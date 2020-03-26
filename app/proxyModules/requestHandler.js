@@ -83,20 +83,18 @@ module.exports = {
     ctx.onResponse(function(ctx, callback){
       console.log('Feteched ' + ulink);
       // Save file for get methods only
-      if (ctx.clientToProxyRequest.method === 'GET') {
-        var contentType = ctx.serverToProxyResponse.headers['content-type'];
-        if (!contentType) // Try guessing
-          contentType = mime.lookup(liburl.parse(url).pathname);
-        var extension = mime.extension(contentType);
-        var filename = random.randomFileName(extension);
-        var relpath = config.options.offlineFilesDir + filename;
-        // Changing to absolute
-        filename = path.resolve(process.cwd(), relpath);
+      var contentType = ctx.serverToProxyResponse.headers['content-type'];
+      if (!contentType) // Try guessing
+        contentType = mime.lookup(liburl.parse(url).pathname);
+      var extension = mime.extension(contentType);
+      var filename = random.randomFileName(extension);
+      var relpath = config.options.offlineFilesDir + filename;
+      // Changing to absolute
+      filename = path.resolve(process.cwd(), relpath);
 
-        var file = fs.createWriteStream(filename);
-        ctx.file = file; // Need to fix later
-        dao.filenameTable.create(filename, url);
-      }
+      var file = fs.createWriteStream(filename);
+      ctx.file = file; // Need to fix later
+      dao.filenameTable.create(filename, url);
       // Continue processes
       return callback(null);
     });

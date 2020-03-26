@@ -16,7 +16,7 @@ html
         each i in requests
           if i.userdefined
             li
-              <a href='https://#{host}#{i.url}'
+              <a href='http://#{host}#{i.url}'
                 span= i.url
               </a>
             
@@ -28,7 +28,7 @@ html
         each i in requests
           if !i.userdefined
             li
-              <a href='https://#{host}#{i.url}'
+              <a href='http://#{host}#{i.url}'
                 span= i.url
               </a>
           

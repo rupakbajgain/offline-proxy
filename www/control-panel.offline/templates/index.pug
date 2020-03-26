@@ -40,7 +40,7 @@ html
       ul
         each vhost in vhosts
           li
-            <a href='https://#{vhost}'>
+            <a href='http://#{vhost}'>
               span= vhost
             </a>
       hr
@@ -60,10 +60,10 @@ html
         
       hr
       h3 Others
-      a(href='https://static.offline/ca.pem')
+      a(href='http://static.offline/ca.pem')
         span Download certificate
       br
-      a(href='https://static.offline/foxyproxy.xpi')
+      a(href='http://static.offline/foxyproxy.xpi')
         span Download firefox proxy plugin
       
       hr
@@ -77,7 +77,7 @@ html
           - var sitename = site.substr(0,site.lastIndexOf('.')).replace('@',':')
           tr
             td
-              <a href='https://#{sitename}'>
+              <a href='http://#{sitename}'>
                 =sitename
               </a>
             td
