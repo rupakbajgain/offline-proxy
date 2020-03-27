@@ -22,20 +22,15 @@ async function _getDatabase(host){
     dao.requestsTable = new RequestsTable(dao);
     dao.siteTable = new SiteTable(dao);
 
-    promises.push(dao.filenameTable.createTable());
-    promises.push(dao.requestsTable.createTable());
-    promises.push(dao.siteTable.createTable());
+    await dao.filenameTable.createTable();
+    await dao.requestsTable.createTable();
+    await dao.siteTable.createTable();
 
-    // Wait for promises to complete
-    var i;
-    for (i in promises){
-      await promises[i];
-    };
-
-    dbs[host] = dao;
     return dao;
   }
 };
+
+var sem = require('semaphore')(1);
 
 module.exports = {
   getDatabase: function(host){
@@ -45,11 +40,11 @@ module.exports = {
       }
 
       // Lock for one access only
-      var sem = require('semaphore')(1);
       sem.take(() => {
         var dao = _getDatabase(host);
-        sem.leave();
+        dbs[host] = dao;
         resolve(dao);
+        sem.leave();
       });
     });
   },
