@@ -40,6 +40,10 @@ async function _getDatabase(host){
 module.exports = {
   getDatabase: function(host){
     return new Promise((resolve, reject) => {
+      if (dbs[host]){
+        resolve(dbs[host]);
+      }
+
       // Lock for one access only
       var sem = require('semaphore')(1);
       sem.take(() => {
