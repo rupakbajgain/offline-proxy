@@ -16,15 +16,16 @@ async function _getDatabase(host){
   } else {
     var dao = new AppDAO('./.db/sites/' + host + '.sqlite3');
 
-    var promises = [];
     // Create all necessary tables also
     dao.filenameTable = new FilenameTable(dao);
     dao.requestsTable = new RequestsTable(dao);
     dao.siteTable = new SiteTable(dao);
 
-    await dao.filenameTable.createTable();
-    await dao.requestsTable.createTable();
-    await dao.siteTable.createTable();
+    await Promise.all([
+      dao.filenameTable.createTable(),
+      dao.requestsTable.createTable(),
+      dao.siteTable.createTable(),
+    ]);
 
     return dao;
   }
