@@ -28,4 +28,4 @@ config.helperApp = helperApp;
 
 // Start listening for connections
 proxy.listen({port: config.PORT});
-debug('Sever started on ' + config.getProxyUrl());
+debug('Server started on ' + config.getProxyUrl());

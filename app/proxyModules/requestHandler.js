@@ -25,7 +25,6 @@ config.setVirtualApp = function(weblink, app){
 
 // Default is offline mode,
 // Which automatically connects to net if given file is unavailable
-
 module.exports = {
   onRequest: async function(ctx, callback) {
     var host = ctx.clientToProxyRequest.headers.host;
@@ -85,7 +84,6 @@ module.exports = {
     // Now try fetching from net
     ctx.onResponse(function(ctx, callback){
       debug('Feteching ' + ulink);
-      // Save file for get methods only
       var contentType = ctx.serverToProxyResponse.headers['content-type'];
       if (!contentType) // Try guessing
         contentType = mime.lookup(liburl.parse(url).pathname);
