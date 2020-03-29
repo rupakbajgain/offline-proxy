@@ -13,6 +13,7 @@ const config = require('./app/config/config');
 // Import sites
 const staticApp = require('./www/static.offline');
 const controlPanelApp = require('./www/control-panel.offline');
+const cPanelApp = require('./www/cpanel.offline');
 const helperApp = require('./www/helper');
 
 // Define new proxy application
@@ -24,6 +25,7 @@ proxy.use(proxy_reqHandler_module);
 // Set virtual hosts
 config.setVirtualApp('static.offline', staticApp);
 config.setVirtualApp('control-panel.offline', controlPanelApp);
+config.setVirtualApp('cpanel.offline', cPanelApp);
 config.helperApp = helperApp;
 
 // Start listening for connections

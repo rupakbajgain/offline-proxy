@@ -5,7 +5,7 @@ var path = require('path');
 var BUILD_DIR = path.resolve(__dirname, './public');
 
 module.exports = {
-  entry: './src/index.jsx',
+  entry: './www/cpanel.offline/src/index.jsx',
   mode: 'development',
   output: {
     path: BUILD_DIR,
