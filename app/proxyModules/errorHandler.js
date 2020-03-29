@@ -1,7 +1,8 @@
 'use strict';
 
+const chalk = require('chalk');
 const config = require('../config/config');
-const debug = require('debug')('proxyapp:onError*');
+const debug = require('debug')('proxyapp:onError');
 
 module.exports = {
   onError: function(ctx, err, errorKind) {
@@ -21,6 +22,7 @@ module.exports = {
       res.writeHead(504, 'Proxy Error');
       res.write('Error on proxy <br/><pre>');
       debug(err);
+      console.log(chalk.red("Error on proxy:"), chalk.redBright(err));
       res.write(errorKind + ' on ' + url + ':', err);
       res.write('</pre>');
     }

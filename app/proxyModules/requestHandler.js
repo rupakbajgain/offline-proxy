@@ -1,12 +1,13 @@
 'use strict';
 
+const chalk = require('chalk');
 const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
 const liburl = require('url');
 
-const debugCookie = require('debug')('proxyapp:cookie*');
-const debug = require('debug')('proxyapp:requesthandler*');
+const debugCookie = require('debug')('proxyapp:cookie');
+const debug = require('debug')('proxyapp:requesthandler');
 
 const config = require('../config/config');
 const random = require('../utils/random');
@@ -30,7 +31,7 @@ module.exports = {
     var host = ctx.clientToProxyRequest.headers.host;
     var url = ctx.clientToProxyRequest.url;
     var ulink = host + url;// -----
-
+    console.log(chalk.green(">"), chalk.greenBright(ulink));
     var dao = await getDB.getDatabase(host.replace(':', '@'));
 
     // If request has cookie update the saved cookie

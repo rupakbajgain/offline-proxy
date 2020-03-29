@@ -2,7 +2,8 @@
 
 // Import libraries
 const Proxy = require('./app/modifiedLibs/proxy');
-const debug = require('debug')('proxyapp:index*');
+const debug = require('debug')('proxyapp:index');
+const chalk = require('chalk');
 
 // Import custom modules
 const proxy_unzip_module = require('./app/proxyModules/unzip');
@@ -30,4 +31,5 @@ config.helperApp = helperApp;
 
 // Start listening for connections
 proxy.listen({port: config.PORT});
+console.log(chalk.cyan('Server started on'),chalk.cyanBright(config.getProxyUrl()));
 debug('Server started on ' + config.getProxyUrl());
