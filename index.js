@@ -31,5 +31,8 @@ config.helperApp = helperApp;
 
 // Start listening for connections
 proxy.listen({port: config.PORT});
-console.log(chalk.cyan('Server started on'),chalk.cyanBright(config.getProxyUrl()));
+console.log(
+  chalk.cyan('Server started on'),
+  chalk.cyanBright(config.getProxyUrl()),
+);
 debug('Server started on ' + config.getProxyUrl());

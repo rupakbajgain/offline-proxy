@@ -22,7 +22,7 @@ module.exports = {
       res.writeHead(504, 'Proxy Error');
       res.write('Error on proxy <br/><pre>');
       debug(err);
-      console.log(chalk.red("Error on proxy:"), chalk.redBright(err));
+      console.log(chalk.red('Error on proxy:'), chalk.redBright(err));
       res.write(errorKind + ' on ' + url + ':', err);
       res.write('</pre>');
     }

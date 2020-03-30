@@ -27,6 +27,13 @@ class FilenameTable {
     );
   }
 
+  deleteAll(){
+    return this.dao.run(
+      'DELETE FROM files',
+      [],
+    );
+  }
+
   getById(id) {
     return this.dao.get(
       'SELECT * FROM files WHERE id = ?',

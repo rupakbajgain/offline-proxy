@@ -5,6 +5,7 @@ const fs = require('fs');
 
 var config = require('../../app/config/config');
 const getDB = require('../../app/helperClass/getDatabase');
+const hostHelpers = require('./helpers/host');
 
 const app = express();
 app.set('view engine', 'pug');
@@ -33,6 +34,11 @@ app.get('/switches/:key/:value/', function(req, res){
   config.options[req.params.key] = req.params.value;
   var options = {};
   options[req.params.key] = req.params.value;
+  res.redirect('/');
+});
+
+app.get('/deletehost', function(req, res){
+  hostHelpers.deleteHost(req.query.host);
   res.redirect('/');
 });
 

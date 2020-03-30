@@ -27,6 +27,13 @@ class RequestsTable {
     );
   }
 
+  deleteAll(){
+    return this.dao.run(
+      'DELETE FROM requests',
+      [],
+    );
+  }
+
   deleteUrl(url) {
     return this.dao.run(
       'DELETE FROM requests WHERE url = ?',

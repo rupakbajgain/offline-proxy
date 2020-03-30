@@ -31,7 +31,7 @@ module.exports = {
     var host = ctx.clientToProxyRequest.headers.host;
     var url = ctx.clientToProxyRequest.url;
     var ulink = host + url;// -----
-    console.log(chalk.green(">"), chalk.greenBright(ulink));
+    console.log(chalk.green('>'), chalk.greenBright(ulink));
     var dao = await getDB.getDatabase(host.replace(':', '@'));
 
     // If request has cookie update the saved cookie
