@@ -4,17 +4,12 @@ import { fetchNewTime } from '../../redux/actionCreators.jsx';
 import {Typography, TextField, Paper, Button } from '@material-ui/core'
 import { List, ListItem, ListItemText , ListItemSecondaryAction,  IconButton} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import { createMuiTheme } from '@material-ui/core/styles'
-import { orange } from '@material-ui/core/colors'
-import {  MuiThemeProvider } from '@material-ui/core/styles'
 
 function styles(theme){
   return(
   {root: {margin: 20, padding: 20, maxWidth: 400}, form: {display: 'flex', alignItems: 'baseline', justifyContent: 'space-evenly'}}
   );
 }
-
-const theme = createMuiTheme({palette: {primary: {light: orange[200],main: '#FB8C00',dark: '#EF6C00', contrastText: 'rgb(0,0,0)'}}})
 
 export class Home extends React.Component {
   constructor(props){
@@ -46,7 +41,6 @@ export class Home extends React.Component {
     const { classes } = this.props
     return (
       <div className="home">
-      <MuiThemeProvider theme={theme}>
         <Paper className={classes.root}>
         <Typography variant='h1' align='center' gutterBottom>Exercises</Typography>
         
@@ -65,7 +59,6 @@ export class Home extends React.Component {
            )}
         </List>
         </Paper>
-        </MuiThemeProvider>
         
         <br/>
         <p>Current time: {props.currentTime}</p>

@@ -1,3 +1,22 @@
 body{
-background:#ccc;
+  margin: 0px;
+  padding: 0px;
+  background: #fff;
+}
+
+#doug-image-container{
+  margin: 0px;
+  padding: 0px;
+  width: 137px;
+  height: 263px;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  background: #fff url('https://static.offline/doug.jpg') no-repeat;
+  opacity: 0.5;
+}
+
+root{
+  margin:  0px;
+  padding: 0px;
 }
