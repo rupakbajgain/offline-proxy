@@ -11,7 +11,7 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', __dirname + '\\templates');
 
-app.get('/', function(req, res){
+app.get('/', async function(req, res){
   var options = {};
   options.config = config;
   options.serverPath = process.cwd();
@@ -20,12 +20,27 @@ app.get('/', function(req, res){
   for (i in config.virtualHosts){
     options.vhosts.push(i);
   }
-  fs.readdir('./.db/sites', (err, files) => {
+
+  // get site options
+  var dao = await getDB.getMainDatabase('site');
+  var promise = dao.siteSwitchesTable.getAll()
+    .then(a => {
+      options.disabledsites = [];
+      var i;
+      for (i in a){
+        if (a[i].value === 'disabled')
+          options.disabledsites.push(a[i].site);
+      }
+    });
+
+  // list all
+  fs.readdir('./.db/sites', async(err, files) => {
     if (err){
       console.error(err);
     } else {
       options.sites = files;
     }
+    await promise;
     res.render('index', options);
   });
 });
@@ -41,6 +56,12 @@ app.get('/deletehost', function(req, res){
   hostHelpers.deleteHost(req.query.host);
   res.redirect('/');
 });
+
+app.get('/disablehost', function(req, res){
+  hostHelpers.disableHost(req.query.host);
+  res.redirect('/');
+});
+
 
 app.get('/requests', async function(req, res){
   var options = {};

@@ -31,8 +31,27 @@ module.exports = {
     var host = ctx.clientToProxyRequest.headers.host;
     var url = ctx.clientToProxyRequest.url;
     var ulink = host + url;// -----
-    console.log(chalk.green('>'), chalk.greenBright(ulink));
+
     var dao = await getDB.getDatabase(host.replace(':', '@'));
+
+    // get site options
+    var dao2 = await getDB.getMainDatabase('site');
+    var disabledSites = [];
+    await dao2.siteSwitchesTable.getAll()
+      .then(a => {
+        var i;
+        for (i in a){
+          if (a[i].value === 'disabled')
+            disabledSites.push(a[i].site);
+        }
+      });
+
+    if (disabledSites.includes(host)) {
+      debug('disabled site', host);
+      return callback();
+    }
+
+    console.log(chalk.green('>'), chalk.greenBright(ulink));
 
     // If request has cookie update the saved cookie
     var cookie = ctx.clientToProxyRequest.headers.cookie;
