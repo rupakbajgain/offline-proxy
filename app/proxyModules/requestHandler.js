@@ -12,7 +12,9 @@ const debug = require('debug')('proxyapp:requesthandler');
 const config = require('../config/config');
 const random = require('../utils/random');
 const getDB = require('../helperClass/getDatabase');
-const dispacher = require('../middlewareHelper/dispacher');
+const { FCacher } = require('../middlewareHelper/funcCacher');
+const pProvider = require('../pluginProvider/pProvider')();
+const modes = require('../types/modes');
 
 // Add features to config
 config.virtualHosts = {};
@@ -48,6 +50,7 @@ var disabledSites = async(ctx, next) => {
   }
   return next();
 };
+pProvider.onRequest(disabledSites);
 
 // Show log
 // can run parallel
@@ -58,6 +61,7 @@ var linkLogger = (ctx, next) => {
   console.log(chalk.green('>'), chalk.greenBright(ulink));
   next();
 };
+pProvider.onRequest([], linkLogger, true);
 
 // Saves cookie from browser
 // can run parallel, no side effect
@@ -83,6 +87,7 @@ var cookieAccepter = async(ctx, next) => {
   };
   next();
 };
+pProvider.onRequest([], cookieAccepter, true);
 
 // Handle virtual apps
 // Series
@@ -99,6 +104,7 @@ var vappHandler = (ctx, next) => {
   };
   return next();
 };
+pProvider.onRequest(vappHandler);
 
 // Send saved file
 var sendSaved = async(ctx, next) => {
@@ -130,6 +136,7 @@ var sendSaved = async(ctx, next) => {
     return next();
   }
 };
+pProvider.onRequest([modes.OFFLINE, modes.SOFFLINE], sendSaved);
 
 // Register callbacks
 var registerCallbacks = async(ctx, next) => {
@@ -174,25 +181,68 @@ var registerCallbacks = async(ctx, next) => {
   // --- --- ---
   return next();
 };
+pProvider.onRequest(
+  [
+    modes.SOFFLINE,
+    modes.SONLINE,
+    modes.ONLINE,
+  ],
+  registerCallbacks);
 
+
+function _dispachHandler({provider}, mode){
+  var [ functorSeries, functorParallel ] = provider.onRequestDispatch();
+  var series = functorSeries
+    .filter((a) => a.mode.includes(mode))
+    .map((a) => a.fn);
+  var parallel = functorParallel
+    .filter((a) => a.mode.includes(mode))
+    .map((a) => a.fn);
+  debug([series, parallel]);
+  // Compile series code for parallel execution
+  // All functions are like middleware
+  var seriesFunction = (ctx, next) => {
+    asyncLib.series(
+      series.map((fn) => {
+        return (callback) => {
+          fn(ctx, callback);
+        };
+      })
+      ,
+      (err) => {
+        if (err)
+          debug('Middleware result:', err);
+        next();
+      },
+    );
+  };
+  // Return parallel dispacher function
+  return (ctx, callback) => {
+    asyncLib.parallel(
+      [seriesFunction].concat(parallel).map((fn) => {
+        return (callback) => {
+          fn(ctx, callback);
+        };
+      })
+      ,
+      (err) => {
+        if (err)
+          debug('Middleware result:', err);
+        callback();
+      },
+    );
+  };
+}
+
+var dispatchHandler = new FCacher(_dispachHandler);
+
+var asyncLib = require('async');
 module.exports = {
   onRequest: async function(ctx, callback) {
-    // Array of what to do
-    var modules = [
-      disabledSites,
-      linkLogger,
-      cookieAccepter,
-      vappHandler,
-      sendSaved,
-      registerCallbacks,
-    ];
-    dispacher(ctx, modules, (err) => {
-      if (err){
-        // These are infos not errors
-        debug('Middleware handle result:', err);
-      }
-      // Leave rest to http-proxy
-      return callback();
-    });
+    var appmode = (config.options.apponline === 'false') ?
+      modes.SOFFLINE : modes.ONLINE;
+    var result = dispatchHandler.call({provider: pProvider}, appmode);
+    result(ctx, callback);
+    // It ends within parallel loop
   },
 };
