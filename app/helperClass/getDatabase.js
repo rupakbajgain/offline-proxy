@@ -30,7 +30,7 @@ async function _getDatabase(host){
 
     return dao;
   }
-};
+}
 
 var dbs2 = {};
 async function _getMainDatabase(host){
@@ -47,7 +47,7 @@ async function _getMainDatabase(host){
 
     return dao;
   }
-};
+}
 
 var sem = require('semaphore')(1);
 

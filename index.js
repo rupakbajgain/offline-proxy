@@ -5,11 +5,16 @@ const Proxy = require('./app/modifiedLibs/proxy');
 const debug = require('debug')('proxyapp:index');
 const chalk = require('chalk');
 
+
+// Config at first
+const config = require('./app/config/config');
+config.store = require('./app/redux/configureStore')();
+config.actionCreators = require('./app/redux/actionCreators');
+
 // Import custom modules
 const proxy_unzip_module = require('./app/proxyModules/unzip');
 const proxy_errorHandler_module = require('./app/proxyModules/errorHandler');
 const proxy_reqHandler_module = require('./app/proxyModules/requestHandler');
-const config = require('./app/config/config');
 
 // Import sites
 const staticApp = require('./www/static.offline');

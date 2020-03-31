@@ -28,7 +28,7 @@ app.all('*', async function(req, res) {
       options.responseUrl = get_url + host + '/' + a.id;
     options.apponline = config.options.apponline;
     res.render('index', options);
-  };
+  }
 
   dao.requestsTable.getByUrl(url)
     .then((a) => {

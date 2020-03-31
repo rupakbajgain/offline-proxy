@@ -11,7 +11,7 @@ module.exports = {
       // console.log(err);
       // Not interested on connect errors
       return;
-    };
+    }
     var url = ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';
     var res = ctx.proxyToClientResponse;
     if (errorKind === 'PROXY_TO_SERVER_REQUEST_ERROR'){

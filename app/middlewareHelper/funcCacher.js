@@ -29,7 +29,14 @@ class FCacher {
     if (!sameArgs){
       this.prevArg = arguments;
       this.prevResult = this.fn(... arguments);
-    };
+    }
+    return this.prevResult;
+  }
+
+  updateCall(){
+    debug('updateCall');
+    this.prevArg = arguments;
+    this.prevResult = this.fn(... arguments);
     return this.prevResult;
   }
 }
