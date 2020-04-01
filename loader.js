@@ -44,8 +44,16 @@ function _done(){
   }
   if (!toLoadModules.every((a) => a.loaded)){
     debug('Not all modules are loaded');
-    debug('mods', toLoadModules);
-    debug('meta', availableMeta);
+    debug('Requires');
+    toLoadModules
+      .filter(a=>!a.loaded)
+      .map(a=>[a[0],a[1].requires.filter(a=>!availableMeta.includes(a))])
+      .map(a=>debug(a[0],':',chalk.redBright(a[1])));
+    debug('Available')
+    debug(availableMeta
+            .filter(a=>!a.startsWith('PHASE_'))
+            .concat(['PHASE_XX'])
+          );
     console.log(chalk.red('Not all modules are loaded'));
   }
 }
