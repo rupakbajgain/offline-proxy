@@ -36,7 +36,12 @@ function _done(){
       for (let i in canLoadModules){
         canLoadModules[i].loaded = true;
         availableMeta = availableMeta.concat(canLoadModules[i][1].gives);
-        canLoadModules[i][1].init();
+        try {
+          canLoadModules[i][1].init();
+        } catch (err){
+          console.log(err);
+          continue;
+        };
         debug(canLoadModules[i][0], 'loaded');
         unchanged = 0;
       }
@@ -46,14 +51,14 @@ function _done(){
     debug('Not all modules are loaded');
     debug('Requires');
     toLoadModules
-      .filter(a=>!a.loaded)
-      .map(a=>[a[0],a[1].requires.filter(a=>!availableMeta.includes(a))])
-      .map(a=>debug(a[0],':',chalk.redBright(a[1])));
-    debug('Available')
+      .filter(a => !a.loaded)
+      .map(a => [a[0], a[1].requires.filter(a => !availableMeta.includes(a))])
+      .map(a => debug(a[0], ':', chalk.redBright(a[1])));
+    debug('Available');
     debug(availableMeta
-            .filter(a=>!a.startsWith('PHASE_'))
-            .concat(['PHASE_XX'])
-          );
+      .filter(a => !a.startsWith('PHASE_'))
+      .concat(['PHASE_XX']),
+    );
     console.log(chalk.red('Not all modules are loaded'));
   }
 }
