@@ -12,7 +12,7 @@ class FCacher {
     this.prevResult = null;
   }
 
-  call(){
+  cacheCall(){
     var sameArgs = true;
     var idx;
     debug('comparing:', arguments, this.prevArg);

@@ -2,7 +2,7 @@
 
 const Proxy = require('http-mitm-proxy');
 
-module.exports = function(){
+var ProxyMOD = function(){
   var proxy = Proxy();
 
   // Update on error handler of proxy, don't write response
@@ -18,4 +18,13 @@ module.exports = function(){
   };
 
   return proxy;
+};
+
+
+module.exports = {
+  requires: ['PHASE_10'],
+  gives: ['global:proxy'],
+  init: () => {
+    global.proxy = ProxyMOD();
+  },
 };

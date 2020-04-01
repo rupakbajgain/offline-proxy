@@ -1,7 +1,6 @@
 {
 	"extends": [
-    "strongloop",
-    "eslint:recommended"
+    "strongloop"
   ],
 
   "parserOptions": {
