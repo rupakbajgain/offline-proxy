@@ -14,7 +14,7 @@ const mod = {
     var url = ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';
     var res = ctx.proxyToClientResponse;
     if (errorKind === 'PROXY_TO_SERVER_REQUEST_ERROR'){
-      global.config.helperApp
+      global.helperApp
         .handle(ctx.clientToProxyRequest, ctx.proxyToClientResponse);
       return;
     } else {
