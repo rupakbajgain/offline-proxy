@@ -31,7 +31,7 @@ const mod = {
 
 module.exports = {
   requires: ['global:proxy', 'global:helperApp'],
-  gives: ['proxy-module.1'],
+  gives: ['proxy-module/2'],
   init: () => {
     global.proxy.use(mod);
   },

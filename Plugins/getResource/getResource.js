@@ -7,9 +7,7 @@ const {createSeriesDispacher} = require('../../app/dispacherHelpers');
 const types = require('../../app/types');
 
 // Active listener for global states
-var _version=0;
-
-
+var _version=[];
 function init(){
   let action = global.actionCreators.initFunctorsHandle(
     'getResourceHandle',
@@ -24,7 +22,7 @@ function init(){
 
 function _dispachHandler(ctx, next){
   const func = createSeriesDispacher(
-    () => global.store.getState().functors['getResourceHandle'].functors
+    global.store.getState().functors['getResourceHandle'].functors
   );
   return func(ctx, next);
 }
@@ -52,23 +50,3 @@ module.exports = {
     global.getResource = getResource;
   },
 };
-
-
-/*
-function databaseHandler2({query, resolve}, next){
-  if (query.protocol !== 'db:')
-    return next();
-  if (query.host === 'sites'){
-    let path = query.pathname.replace(':', '@') + '.sqlite3';
-    return resolve(('DB' + path));
-  }
-  next();
-};
-
-function fileHandler({query, resolve}, next){
-  if (query.protocol !== 'file:')
-    return next();
-  let host = query.host.replace(':', '@');
-  return resolve((host + query.pathname));
-};
-*/

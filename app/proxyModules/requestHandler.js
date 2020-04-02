@@ -73,11 +73,7 @@ store.dispatch(action);
 // Show log
 // can run parallel
 var linkLogger = (ctx, next) => {
-  var host = ctx.clientToProxyRequest.headers.host;
-  var url = ctx.clientToProxyRequest.url;
-  var ulink = host + url;
-  console.log(chalk.green('>'), chalk.greenBright(ulink));
-  next();
+
 };
 action = actionCreators.registerRequestHandler(
   types.DEFAULT_APP,
