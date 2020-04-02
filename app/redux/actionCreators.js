@@ -6,7 +6,7 @@ module.exports.setAppState = (newState) => ({
   type: types.SET_APP_STATE,
   payload: newState,
 });
-
+/*
 // Notify a plugin has been added to system
 module.exports.addPlugin = (name) => ({
   type: types.PLUGIN,
@@ -23,16 +23,26 @@ module.exports.removePlugin = (name) => ({
     method: types.REMOVE_PLUGIN,
     name,
   },
-});
+});*/
 
 // for onRequestHandlers
-module.exports.registerRequestHandler =
+module.exports.registerFunctorsHandle =
     (name, handleProvider, parallel = false) => ({
-      type: types.PLUGIN,
+      type: types.FUNCTOR_HELPER,
       payload: {
-        method: types.ADD_REQUEST_HANDLER,
+        method: types.ADD_FUNCTOR_HANDLE,
         name,
         handleProvider,
         parallel,
+      },
+    });
+
+// Init functor
+module.exports.initFunctorsHandle =
+    (name) => ({
+      type: types.FUNCTOR_HELPER,
+      payload: {
+        method: types.INIT_FUNCTOR_HANDLE,
+        name,
       },
     });

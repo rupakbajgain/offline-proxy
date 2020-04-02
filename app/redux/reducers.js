@@ -2,16 +2,16 @@
 const { combineReducers } = require('redux');
 
 const appStatus = require('./appStatus');
-const plugin = require('./plugin');
+const functors = require('./functors');
 
 const rootReducer = combineReducers({
   appStatus: appStatus.reducer,
-  plugin: plugin.reducer,
+  functors: functors.reducer,
 });
 
 const initialState = {
   appStatus: appStatus.initialState,
-  plugin: plugin.initialState,
+  functors: functors.initialState,
 };
 
 module.exports = {rootReducer, initialState};

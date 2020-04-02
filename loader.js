@@ -2,7 +2,7 @@
 
 // Don't run in parallel
 const fs = require('fs');
-const debug = require('debug')('proxyapp:loader');
+const debug = require('debug')('loader');
 const chalk = require('chalk');
 
 var toLoadModules = [];
@@ -114,7 +114,7 @@ function loadPlugins(dir, files){
     // If not mount point is given mount at last
     if (!meta.requires || meta.requires.length === 0)
       meta.requires = ['PHASE_99'];
-    toLoadModules.push([fname, meta]);
+    toLoadModules.push([dir + '/' + fname, meta]);
   }
 }
 
@@ -126,8 +126,6 @@ function loadPluginsFromDir(dir, done = () => {}){
       debug('started');
       loadPlugins(dir, files);
       _done();
-      toLoadModules = [];
-      availableMeta = [];
       debug('completed');
       done();
     }

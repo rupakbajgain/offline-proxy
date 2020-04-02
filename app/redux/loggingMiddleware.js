@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('proxyapp:reduxLog');
+const debug = require('debug')('reduxLog');
 
 module.exports = (store) => (next) => (action) => {
   // Our middleware
