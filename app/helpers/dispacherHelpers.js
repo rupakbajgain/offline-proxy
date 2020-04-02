@@ -12,7 +12,7 @@ function createSeriesDispacher(arr){
       }),
       (e) => {
         err(e);
-      }
+      },
     );
 }
 
@@ -27,8 +27,8 @@ function createParallelDispacher(arr){
       }),
       (e) => {
         err(e);
-      }
+      },
     );
 }
 
-module.exports = { createSeriesDispacher , createParallelDispacher }
+module.exports = { createSeriesDispacher, createParallelDispacher };

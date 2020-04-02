@@ -1,6 +1,5 @@
 'use strict';
 
-const SiteSwitchesTable = require('../../app/models/siteSwitches');
 const chalk = require('chalk');
 
 function init(){
@@ -17,7 +16,7 @@ const handler = () => (ctx, next) => {
   var ulink = host + url;
   console.log(chalk.green('>'), chalk.greenBright(ulink));
   next();
-}
+};
 
 module.exports = {
   requires: ['proxy-module'],

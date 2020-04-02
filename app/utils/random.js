@@ -2,7 +2,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const config = require('../config/config');
 
 var functions = {
   randomSerialNumber: function() {
@@ -20,7 +19,7 @@ var functions = {
     var filename = '';
     while (file_not_ok){
       filename = functions.randomSerialNumber() + '.' + extension;
-      var relpath = config.options.offlineFilesDir + filename;
+      var relpath = './.file/' + filename;
       var abspath = path.resolve(process.cwd(), relpath);
       file_not_ok = fs.existsSync(abspath);
     }

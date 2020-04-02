@@ -1,6 +1,6 @@
 'use strict';
 
-const getDB = require('../../app/helperClass/getDatabase');
+const getDB = require('../../app/helpers/getDatabase');
 const FilenameTable = require('../../app/models/filenameTable');
 const RequestsTable = require('../../app/models/requestsTable');
 const SiteTable = require('../../app/models/siteTable');
@@ -18,8 +18,8 @@ async function databaseHandler({query, resolve}, next){
     return next();
   if (query.host === 'sites'){
     let path = query.pathname.replace(':', '@') + '.sqlite3';
-    let dao = await getDB('./.db/sites'+path);
-    
+    let dao = await getDB('./.db/sites' + path);
+
     // Create all necessary tables also
     dao.filenameTable = new FilenameTable(dao);
     dao.requestsTable = new RequestsTable(dao);
@@ -30,7 +30,7 @@ async function databaseHandler({query, resolve}, next){
       dao.requestsTable.createTable(),
       dao.siteTable.createTable(),
     ]);
-    
+
     return resolve(dao);
   }
   next();

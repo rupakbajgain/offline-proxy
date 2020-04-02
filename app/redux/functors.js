@@ -19,7 +19,6 @@ const reducer = (state = initialState, action) => {
                 functors: [],
               },
         };
-        break;
       case types.ADD_FUNCTOR_HANDLE:
         return {
           ...state,

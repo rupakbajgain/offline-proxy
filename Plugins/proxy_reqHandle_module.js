@@ -1,14 +1,16 @@
 'use strict';
 
-const chalk = require('chalk');
-const debug = require('debug')('proxyapp:onError');
-const { FCacher } = require('../app/middlewareHelper/funcCacher');
-const {createSeriesDispacher , createParallelDispacher } = require('../app/dispacherHelpers');
+const { FCacher } = require('../app/helpers/funcCacher');
+
+const {
+  createSeriesDispacher,
+  createParallelDispacher,
+} = require('../app/helpers/dispacherHelpers');
 
 // Active listener for global states
-var _versionSeries=[];
-var _versionParallel=[];
-var _applicationState=[];
+var _versionSeries = [];
+var _versionParallel = [];
+var _applicationState = [];
 function init(){
   let action = global.actionCreators.initFunctorsHandle(
     'getRequestSeriesHandle',
@@ -18,7 +20,7 @@ function init(){
     'getRequestParallelHandle',
   );
   global.store.dispatch(action);
-  
+
   // Active listener
   global.store.subscribe((s) => {
     let state = global.store.getState();
@@ -33,10 +35,10 @@ function _dispachHandler(appState){
   let series = state.functors['getRequestSeriesHandle'].functors.reverse();
   let parallel = state.functors['getRequestParallelHandle'].functors;
   const serialFunc = createSeriesDispacher(
-    series.map(a=>a(appState))
+    series.map(a => a(appState)),
   );
   const parallFunc = createParallelDispacher(
-    [... parallel.map(a=>a(appState)), serialFunc]
+    [... parallel.map(a => a(appState)), serialFunc],
   );
   return parallFunc;
 }
@@ -49,7 +51,11 @@ var _oldMode;
 const mod = {
   onRequest: async function(ctx, callback) {
     var result;
-    if ((_oldVersionSeries !== _versionSeries)||(_oldVersionParallel !== _versionParallel) || (_oldMode!=_applicationState)){
+    if (
+      (_oldVersionSeries !== _versionSeries) ||
+      (_oldVersionParallel !== _versionParallel) ||
+      (_oldMode !== _applicationState)
+    ){
       _oldVersionSeries = _versionSeries;
       _oldVersionParallel = _versionParallel;
       _oldMode = _applicationState;
@@ -61,12 +67,21 @@ const mod = {
         _applicationState,
       );
     }
-    result(ctx, callback);
+    result(ctx,
+      (e) => {
+        callback();
+      },
+    );
   },
 };
 
 module.exports = {
-  requires: ['global:proxy', 'global:helperApp', 'global:actionCreators', 'global:store'],
+  requires: [
+    'global:proxy',
+    'global:helperApp',
+    'global:actionCreators',
+    'global:store',
+  ],
   gives: ['proxy-module/3'],
   init: () => {
     init();

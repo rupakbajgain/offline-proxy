@@ -1,6 +1,6 @@
 'use strict';
 
-const getDB = require('../../app/helperClass/getDatabase');
+const getDB = require('../../app/helpers/getDatabase');
 const SiteSwitchesTable = require('../../app/models/siteSwitches');
 
 function init(){
@@ -14,14 +14,14 @@ function init(){
 async function databaseHandler({query, resolve}, next){
   if (query.protocol !== 'db:')
     return next();
-  if (query.host === 'root' && query.pathname == '/site'){
+  if (query.host === 'root' && query.pathname === '/sites'){
     var dao = await getDB('./.db/site.sqlite3');
-    
+
     dao.siteSwitchesTable = new SiteSwitchesTable(dao);
     await Promise.all([
       dao.siteSwitchesTable.createTable(),
     ]);
-    
+
     return resolve(dao);
   }
   next();

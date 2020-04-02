@@ -17,13 +17,13 @@ app.all('*', async function(req, res) {
   // Create failed page
   const host = req.headers.host;
   const url = req.url;
-  const dao = await global.getResource('db://sites/'+host);
+  const dao = await global.getResource('db://sites/' + host);
 
   function handlePage(a){
     var get_url = 'http://control-panel.offline/addRequest/';
     if (!a.userdefined)
       options.responseUrl = get_url + host + '/' + a.id;
-    options.apponline = config.options.apponline;
+    options.apponline = true;
     res.render('index', options);
   }
 
@@ -41,7 +41,7 @@ app.all('*', async function(req, res) {
 });
 
 module.exports = {
-  requires: ['global:config','global:getResource'],
+  requires: ['global:config', 'global:getResource'],
   gives: ['global:helperApp'],
   init: () => {
     global.helperApp = app;

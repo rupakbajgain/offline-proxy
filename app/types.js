@@ -6,7 +6,7 @@ module.exports = {
   SOFFLINE: -2,
   SONLINE: 2,
   ONLINE: 5,
-  
+
   NOT_FOUND: 'NOT_FOUND',
 
   FUNCTOR_HELPER: 'FUNCTOR_HELPER',
