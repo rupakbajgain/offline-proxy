@@ -17,9 +17,6 @@ class FCacher {
     var idx;
     debug('comparing:', arguments, this.prevArg);
     for (idx in arguments){
-      // Pass arguments that cannot be compaired in 1st as {}
-      if (idx === '0')
-        continue;
       if (arguments[idx] !== this.prevArg[idx]){
         sameArgs = false;
         break;

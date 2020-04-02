@@ -229,7 +229,6 @@ action = actionCreators.registerRequestHandler(
 );
 store.dispatch(action);
 
-
 var asyncLib = require('async');
 // Return lambda to dispacher handlers
 function _dispachHandler(arg1, mode){
